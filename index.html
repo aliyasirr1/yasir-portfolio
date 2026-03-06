@@ -501,12 +501,7 @@
         box-sizing: border-box;
     }
 
-    @keyframes gradientBG {
-        0%   { background-position: 0% 50%; }
-        50%  { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
+   
     /* --- PARALLAX WATERMARK IMAGE --- */
     .about-watermark-img {
         position: absolute;
@@ -907,12 +902,7 @@
         z-index: 20;
     }
 
-    @keyframes gradientBG {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
+   
     /* --- LAYOUT WRAPPER --- */
     .cap-container {
         position: relative;
@@ -2049,12 +2039,7 @@
         z-index: 20;
     }
 
-    @keyframes gradientBG {
-        0%   { background-position: 0% 50%; }
-        50%  { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-
+    
     /* --- BACKGROUND ELEMENTS --- */
     .contact-watermark {
         position: absolute;
@@ -3152,261 +3137,257 @@
 
 
 <script>
-    (function() {
+    /**
+ * YASIR PORTFOLIO - CORE ENGINE 2026
+ * Structured Logic for Navigation, Animations, Modals, and Interactive UI
+ */
+
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // --- 1. GLOBAL CONSTANTS & HELPERS ---
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'yasir-portfolio';
+
+    // --- 2. MOBILE NAVIGATION LOGIC ---
+    const initNavigation = () => {
         const toggleBtn = document.getElementById('mobileNavToggle');
         const mobileMenu = document.getElementById('mobileNavMenu');
+        const navLinks = document.querySelectorAll('.mobile-nav-link, .nav-link');
 
         if (toggleBtn && mobileMenu) {
-            toggleBtn.addEventListener('click', function(e) {
+            toggleBtn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 mobileMenu.classList.toggle('active');
             });
 
-            document.addEventListener('click', function(event) {
-                if (!toggleBtn.contains(event.target) && !mobileMenu.contains(event.target)) {
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
                     mobileMenu.classList.remove('active');
                 }
             });
 
-            const links = mobileMenu.querySelectorAll('.mobile-nav-link');
-            links.forEach(link => {
-                link.addEventListener('click', function() {
+            // Handle Active States and Smooth Scroll
+            navLinks.forEach(link => {
+                link.addEventListener('click', () => {
                     mobileMenu.classList.remove('active');
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
                 });
             });
         }
+    };
 
-(function () {
-        const section   = document.getElementById('yasir-about');
+    // --- 3. ABOUT SECTION: OBSERVER & PARALLAX ---
+    const initAboutEffects = () => {
+        const aboutSection = document.getElementById('yasir-about');
         const watermark = document.getElementById('about-watermark');
-        if (!section) return;
 
-        /* 1. Animate content in when section enters viewport */
-        const observer = new IntersectionObserver(
-            (entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        section.classList.add('is-visible');
-                        observer.unobserve(section);
-                    }
-                });
-            },
-            { threshold: 0.12 }
-        );
-        observer.observe(section);
+        if (!aboutSection) return;
 
-        /* 2. Parallax — image drifts LEFT → RIGHT continuously via rAF */
-        if (watermark) {
-            const animate = () => {
-                const rect     = section.getBoundingClientRect();
-                const winH     = window.innerHeight;
-                const total    = winH + rect.height;
-                // 0 = section just entered bottom, 1 = section just left top
-                const progress = Math.min(Math.max(1 - (rect.bottom / total), 0), 1);
-                // left→right: -8% to +8%
-                const xPct     = -8 + progress * 16;
-                watermark.style.transform = `translate(calc(-50% + ${xPct}%), -50%)`;
-                requestAnimationFrame(animate);
-            };
-            requestAnimationFrame(animate);
-        }
-    })();
-
-
-<script>
-    const initBlueprintCapabilities = () => {
-        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-            document.querySelectorAll('.cap-eyebrow, .cap-title, .cap-panel').forEach(el => {
-                el.style.opacity = 1; el.style.transform = "none";
+        // Visibility Observer
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    aboutSection.classList.add('is-visible');
+                    observer.unobserve(aboutSection);
+                }
             });
+        }, { threshold: 0.15 });
+        observer.observe(aboutSection);
+
+        // Parallax Watermark Drifting
+        if (watermark) {
+            const driftParallax = () => {
+                const rect = aboutSection.getBoundingClientRect();
+                const winH = window.innerHeight;
+                if (rect.top < winH && rect.bottom > 0) {
+                    const total = winH + rect.height;
+                    const progress = Math.min(Math.max(1 - (rect.bottom / total), 0), 1);
+                    const xPct = -8 + progress * 16; // Drift -8% to 8%
+                    watermark.style.transform = `translate(calc(-50% + ${xPct}%), -50%)`;
+                }
+                requestAnimationFrame(driftParallax);
+            };
+            requestAnimationFrame(driftParallax);
+        }
+    };
+
+    // --- 4. GSAP CAPABILITIES ANIMATION ---
+    const initGSAP = () => {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+            // Fallback: Show elements if GSAP is missing
+            document.querySelectorAll('.cap-panel').forEach(p => p.style.opacity = "1");
             return;
         }
 
         gsap.registerPlugin(ScrollTrigger);
-        const blueprintTl = gsap.timeline({
+
+        const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#yasir-capabilities",
-                start: "top 60%", 
-                end: "bottom bottom",
-                toggleActions: "play none none reverse" 
+                start: "top 70%",
+                toggleActions: "play none none reverse"
             }
         });
 
-        blueprintTl.to(".cap-eyebrow", { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" })
-                   .to(".cap-title", { opacity: 1, y: 0, duration: 0.8, ease: "expo.out" }, "-=0.4")
-                   .to(".cap-panel", {
-                        opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: "power4.out"
-                   }, "-=0.5");
+        tl.to(".cap-eyebrow", { opacity: 1, y: 0, duration: 0.5 })
+          .to(".cap-title", { opacity: 1, y: 0, duration: 0.6 }, "-=0.3")
+          .to(".cap-panel", { 
+              opacity: 1, 
+              y: 0, 
+              stagger: 0.15, 
+              duration: 0.8, 
+              ease: "power3.out" 
+          }, "-=0.4");
     };
 
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        setTimeout(initBlueprintCapabilities, 100);
-    } else {
-        window.addEventListener('DOMContentLoaded', () => setTimeout(initBlueprintCapabilities, 100));
-    }
+    // --- 5. PORTFOLIO TABS & MODAL ENGINE ---
+    const initPortfolio = () => {
+        // Tab Switching
+        const tabs = document.querySelectorAll('.tab-btn');
+        const panels = document.querySelectorAll('.works-panel');
 
-
-
-(function(){
-
-    /* ── TAB SWITCHING ── */
-    document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', function(){
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.works-panel').forEach(p => p.classList.remove('active'));
-            this.classList.add('active');
-            const target = document.getElementById(this.dataset.panel);
-            if(target){ target.classList.add('active'); }
+        tabs.forEach(btn => {
+            btn.addEventListener('click', () => {
+                tabs.forEach(b => b.classList.remove('active'));
+                panels.forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                const target = document.getElementById(btn.dataset.panel);
+                if (target) target.classList.add('active');
+            });
         });
-    });
 
-    /* ── MODAL ── */
-    const modal    = document.getElementById('yw-modal');
-    const mClose   = document.getElementById('yw-modal-close');
-    const mImg     = document.getElementById('yw-m-img');
-    const mTitle   = document.getElementById('yw-m-title');
-    const mClient  = document.getElementById('yw-m-client');
-    const mRole    = document.getElementById('yw-m-role');
-    const mYear    = document.getElementById('yw-m-year');
-    const mBody    = document.getElementById('yw-m-body');
-    const mVisit   = document.getElementById('yw-m-visit');
+        // Modal Content Population
+        const modal = document.getElementById('yw-modal');
+        const mClose = document.getElementById('yw-modal-close');
+        
+        document.querySelectorAll('.open-modal').forEach(row => {
+            row.addEventListener('click', function() {
+                document.getElementById('yw-m-img').src = this.dataset.img;
+                document.getElementById('yw-m-title').innerHTML = `${this.dataset.title}<span class="dot">.</span>`;
+                document.getElementById('yw-m-client').textContent = this.dataset.client;
+                document.getElementById('yw-m-role').textContent = this.dataset.role;
+                document.getElementById('yw-m-year').textContent = this.dataset.year;
+                document.getElementById('yw-m-body').innerHTML = this.dataset.text;
+                
+                const visitBtn = document.getElementById('yw-m-visit');
+                if (this.dataset.url) {
+                    visitBtn.href = this.dataset.url;
+                    visitBtn.style.display = 'flex';
+                } else {
+                    visitBtn.style.display = 'none';
+                }
 
-    document.querySelectorAll('.open-modal').forEach(row => {
-        row.addEventListener('click', function(){
-            mImg.src          = this.dataset.img;
-            mTitle.innerHTML  = this.dataset.title + '<span class="dot">.</span>';
-            mClient.textContent = this.dataset.client;
-            mRole.textContent   = this.dataset.role;
-            mYear.textContent   = this.dataset.year;
-            mBody.innerHTML     = this.dataset.text;
-            if(this.dataset.url){
-                mVisit.href  = this.dataset.url;
-                mVisit.style.display = 'flex';
-            } else {
-                mVisit.style.display = 'none';
-            }
-            modal.scrollTop = 0;
-            document.body.style.overflow = 'hidden';
-            modal.classList.add('open');
+                modal.scrollTop = 0;
+                modal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
         });
-    });
 
-    const closeModal = () => { modal.classList.remove('open'); document.body.style.overflow = ''; };
-    mClose.addEventListener('click', closeModal);
-    modal.addEventListener('click', e => { if(e.target === modal) closeModal(); });
-
-    /* ── LIGHTBOX ── */
-    const lb      = document.getElementById('yw-lightbox');
-    const lbImg   = document.getElementById('yw-lb-img');
-    const lbClose = document.getElementById('yw-lb-close');
-
-    document.querySelectorAll('.open-lb').forEach(item => {
-        item.addEventListener('click', function(){
-            lbImg.src = this.dataset.src;
-            lb.classList.add('open');
-            document.body.style.overflow = 'hidden';
-        });
-    });
-
-    const closeLb = () => { lb.classList.remove('open'); document.body.style.overflow = ''; };
-    lbClose.addEventListener('click', closeLb);
-    lb.addEventListener('click', e => { if(e.target === lb) closeLb(); });
-
-    /* ── ESC KEY ── */
-    document.addEventListener('keydown', e => {
-        if(e.key === 'Escape'){ closeModal(); closeLb(); }
-    });
-
-
-const testimonials = [
-        {
-            name: "James Carter",
-            role: "CEO, Elevate Brands",
-            text: "Yasir engineered our digital presence. The system is flawless.",
-            initial: "J"
-        },
-        {
-            name: "Sarah Jenkins",
-            role: "Director, NovaTech",
-            text: "A true visionary. Bridged the gap between design and A.I. automation.",
-            initial: "S"
-        },
-        {
-            name: "David Chen",
-            role: "Founder, Zenith",
-            text: "The performance and aesthetic put us years ahead of competition.",
-            initial: "D"
+        if (mClose) {
+            mClose.addEventListener('click', () => {
+                modal.classList.remove('open');
+                document.body.style.overflow = '';
+            });
         }
-    ];
 
-    let current = 0;
-    let scrollInterval;
+        // Lightbox
+        const lb = document.getElementById('yw-lightbox');
+        const lbImg = document.getElementById('yw-lb-img');
+        const lbClose = document.getElementById('yw-lb-close');
 
-    function updateTestimonial(index) {
+        document.querySelectorAll('.open-lb').forEach(item => {
+            item.addEventListener('click', function() {
+                lbImg.src = this.dataset.src;
+                lb.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        if (lbClose) {
+            lbClose.addEventListener('click', () => {
+                lb.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        }
+    };
+
+    // --- 6. TESTIMONIALS SLIDER ---
+    const initTestimonials = () => {
+        const testimonials = [
+            { name: "James Carter", role: "CEO, Elevate Brands", text: "Yasir engineered our digital presence. The system is flawless.", initial: "J" },
+            { name: "Sarah Jenkins", role: "Director, NovaTech", text: "A true visionary. Bridged the gap between design and A.I.", initial: "S" },
+            { name: "David Chen", role: "Founder, Zenith", text: "The performance and aesthetic put us years ahead of competition.", initial: "D" }
+        ];
+
+        let current = 0;
         const card = document.getElementById('active-card');
-        
-        // Animation Out
-        card.style.transform = "translateY(20px) scale(0.95)";
-        card.style.opacity = "0";
 
-        setTimeout(() => {
-            // Update Data
-            document.getElementById('quote-text').innerText = testimonials[index].text;
-            document.getElementById('author-name').innerText = testimonials[index].name;
-            document.getElementById('author-role').innerText = testimonials[index].role;
-            document.getElementById('author-initial').innerText = testimonials[index].initial;
-            
-            // Animation In
-            card.style.transform = "translateY(0) scale(1)";
-            card.style.opacity = "1";
-        }, 300);
-        
-        resetAutoScroll();
-    }
+        window.updateTestimonial = (index) => {
+            if (!card) return;
+            card.style.opacity = "0";
+            card.style.transform = "translateY(15px) scale(0.98)";
 
-    function nextSlide() {
-        current = (current + 1) % testimonials.length;
-        updateTestimonial(current);
-    }
+            setTimeout(() => {
+                document.getElementById('quote-text').innerText = testimonials[index].text;
+                document.getElementById('author-name').innerText = testimonials[index].name;
+                document.getElementById('author-role').innerText = testimonials[index].role;
+                document.getElementById('author-initial').innerText = testimonials[index].initial;
+                card.style.opacity = "1";
+                card.style.transform = "translateY(0) scale(1)";
+            }, 300);
+        };
 
-    function prevSlide() {
-        current = (current - 1 + testimonials.length) % testimonials.length;
-        updateTestimonial(current);
-    }
+        window.nextSlide = () => {
+            current = (current + 1) % testimonials.length;
+            window.updateTestimonial(current);
+        };
 
-    // --- AUTO SCROLL TIMER ---
-    function startAutoScroll() {
-        scrollInterval = setInterval(nextSlide, 5000); // 5 Seconds
-    }
+        window.prevSlide = () => {
+            current = (current - 1 + testimonials.length) % testimonials.length;
+            window.updateTestimonial(current);
+        };
 
-    function resetAutoScroll() {
-        clearInterval(scrollInterval);
-        startAutoScroll();
-    }
+        setInterval(window.nextSlide, 7000);
+    };
 
-    // Init
-    startAutoScroll();
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const updateTime = () => {
-            const el = document.getElementById('khi-time');
-            if (!el) return;
+    // --- 7. UTILITIES: CLOCK & ESCAPE KEY ---
+    const initUtilities = () => {
+        // Live Clock
+        const updateClock = () => {
+            const clockEl = document.getElementById('khi-time');
+            if (!clockEl) return;
             const now = new Date();
-            el.textContent = now.toLocaleTimeString('en-US', {
-                timeZone: 'Asia/Karachi',
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: true
+            clockEl.textContent = now.toLocaleTimeString('en-US', {
+                timeZone: 'Asia/Karachi', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
             }) + ' PKT';
         };
-        setInterval(updateTime, 1000);
-        updateTime();
-    });
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Global Esc Key for Modals
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('yw-modal');
+                const lb = document.getElementById('yw-lightbox');
+                if (modal) modal.classList.remove('open');
+                if (lb) lb.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+        });
+    };
+
+    // --- EXECUTE INITIALIZATION ---
+    initNavigation();
+    initAboutEffects();
+    initGSAP();
+    initPortfolio();
+    initTestimonials();
+    initUtilities();
+
+});
 </script>
 
 
 </body>
-
 </html>
