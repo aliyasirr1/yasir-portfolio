@@ -3064,18 +3064,14 @@
 
 
 
-<script>
-    /**
+/**
  * YASIR PORTFOLIO - CORE ENGINE 2026
  * Structured Logic for Navigation, Animations, Modals, and Interactive UI
  */
 
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. GLOBAL CONSTANTS & HELPERS ---
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'yasir-portfolio';
-
-    // --- 2. MOBILE NAVIGATION LOGIC ---
+    // --- 1. MOBILE NAVIGATION LOGIC ---
     const initNavigation = () => {
         const toggleBtn = document.getElementById('mobileNavToggle');
         const mobileMenu = document.getElementById('mobileNavMenu');
@@ -3105,14 +3101,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 3. ABOUT SECTION: OBSERVER & PARALLAX ---
+    // --- 2. ABOUT SECTION EFFECTS ---
     const initAboutEffects = () => {
         const aboutSection = document.getElementById('yasir-about');
         const watermark = document.getElementById('about-watermark');
 
         if (!aboutSection) return;
 
-        // Visibility Observer
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
@@ -3123,7 +3118,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }, { threshold: 0.15 });
         observer.observe(aboutSection);
 
-        // Parallax Watermark Drifting
         if (watermark) {
             const driftParallax = () => {
                 const rect = aboutSection.getBoundingClientRect();
@@ -3131,7 +3125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (rect.top < winH && rect.bottom > 0) {
                     const total = winH + rect.height;
                     const progress = Math.min(Math.max(1 - (rect.bottom / total), 0), 1);
-                    const xPct = -8 + progress * 16; // Drift -8% to 8%
+                    const xPct = -8 + progress * 16;
                     watermark.style.transform = `translate(calc(-50% + ${xPct}%), -50%)`;
                 }
                 requestAnimationFrame(driftParallax);
@@ -3140,16 +3134,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 4. GSAP CAPABILITIES ANIMATION ---
+    // --- 3. GSAP ANIMATIONS ---
     const initGSAP = () => {
         if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-            // Fallback: Show elements if GSAP is missing
             document.querySelectorAll('.cap-panel').forEach(p => p.style.opacity = "1");
             return;
         }
-
         gsap.registerPlugin(ScrollTrigger);
-
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#yasir-capabilities",
@@ -3157,35 +3148,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleActions: "play none none reverse"
             }
         });
-
         tl.to(".cap-eyebrow", { opacity: 1, y: 0, duration: 0.5 })
           .to(".cap-title", { opacity: 1, y: 0, duration: 0.6 }, "-=0.3")
-          .to(".cap-panel", { 
-              opacity: 1, 
-              y: 0, 
-              stagger: 0.15, 
-              duration: 0.8, 
-              ease: "power3.out" 
-          }, "-=0.4");
+          .to(".cap-panel", { opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: "power3.out" }, "-=0.4");
     };
 
-   function openLightbox(element) {
-    const imgSrc = element.querySelector('img').src;
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
-    
-    lightboxImg.src = imgSrc;
-    lightbox.style.display = 'flex';
-    document.body.style.overflow = 'hidden'; // Stop scrolling background
-}
+    // --- 4. PORTFOLIO LIGHTBOX LOGIC ---
+    // Inhe window object mein dala hai takay HTML ka onclick inhen dhond sakay
+    window.openLightbox = (element) => {
+        const imgSrc = element.querySelector('img').src;
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        
+        if (lightbox && lightboxImg) {
+            lightboxImg.src = imgSrc;
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; 
+        }
+    };
 
-function closeLightbox() {
-    const lightbox = document.getElementById('lightbox');
-    lightbox.style.display = 'none';
-    document.body.style.overflow = 'auto'; // Resume scrolling
-}
+    window.closeLightbox = () => {
+        const lightbox = document.getElementById('lightbox');
+        if (lightbox) {
+            lightbox.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+    };
 
-    // --- 6. TESTIMONIALS SLIDER ---
+    // --- 5. TESTIMONIALS SLIDER ---
     const initTestimonials = () => {
         const testimonials = [
             { name: "James Carter", role: "CEO, Elevate Brands", text: "Yasir engineered our digital presence. The system is flawless.", initial: "J" },
@@ -3221,12 +3211,11 @@ function closeLightbox() {
             window.updateTestimonial(current);
         };
 
-        setInterval(window.nextSlide, 7000);
+        if (card) setInterval(window.nextSlide, 7000);
     };
 
-    // --- 7. UTILITIES: CLOCK & ESCAPE KEY ---
+    // --- 6. UTILITIES (CLOCK & KEYBOARD) ---
     const initUtilities = () => {
-        // Live Clock
         const updateClock = () => {
             const clockEl = document.getElementById('khi-time');
             if (!clockEl) return;
@@ -3238,30 +3227,25 @@ function closeLightbox() {
         setInterval(updateClock, 1000);
         updateClock();
 
-        // Global Esc Key for Modals
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
+                window.closeLightbox();
+                // Close other modals if any
                 const modal = document.getElementById('yw-modal');
-                const lb = document.getElementById('yw-lightbox');
                 if (modal) modal.classList.remove('open');
-                if (lb) lb.classList.remove('open');
-                document.body.style.overflow = '';
             }
         });
     };
 
-    // --- EXECUTE INITIALIZATION ---
+    // --- EXECUTE ALL MODULES ---
     initNavigation();
     initAboutEffects();
     initGSAP();
-    initPortfolio();
     initTestimonials();
     initUtilities();
-
 });
-</script>
-
 
 </body>
 </html>
+
 
