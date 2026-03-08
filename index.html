@@ -3068,10 +3068,13 @@
  * YASIR PORTFOLIO - CORE ENGINE 2026
  * Structured Logic for Navigation, Animations, Modals, and Interactive UI
  */
-
+<script>
 document.addEventListener('DOMContentLoaded', () => {
     
-    // --- 1. MOBILE NAVIGATION LOGIC ---
+    // --- 1. GLOBAL CONSTANTS & HELPERS ---
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'yasir-portfolio';
+
+    // --- 2. MOBILE NAVIGATION LOGIC ---
     const initNavigation = () => {
         const toggleBtn = document.getElementById('mobileNavToggle');
         const mobileMenu = document.getElementById('mobileNavMenu');
@@ -3083,14 +3086,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 mobileMenu.classList.toggle('active');
             });
 
-            // Close menu when clicking outside
             document.addEventListener('click', (e) => {
                 if (!mobileMenu.contains(e.target) && !toggleBtn.contains(e.target)) {
                     mobileMenu.classList.remove('active');
                 }
             });
 
-            // Handle Active States and Smooth Scroll
             navLinks.forEach(link => {
                 link.addEventListener('click', () => {
                     mobileMenu.classList.remove('active');
@@ -3101,7 +3102,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 2. ABOUT SECTION EFFECTS ---
+    // --- 3. ABOUT SECTION: OBSERVER & PARALLAX ---
     const initAboutEffects = () => {
         const aboutSection = document.getElementById('yasir-about');
         const watermark = document.getElementById('about-watermark');
@@ -3134,13 +3135,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 3. GSAP ANIMATIONS ---
+    // --- 4. GSAP CAPABILITIES ANIMATION ---
     const initGSAP = () => {
         if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
             document.querySelectorAll('.cap-panel').forEach(p => p.style.opacity = "1");
             return;
         }
+
         gsap.registerPlugin(ScrollTrigger);
+
         const tl = gsap.timeline({
             scrollTrigger: {
                 trigger: "#yasir-capabilities",
@@ -3148,13 +3151,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 toggleActions: "play none none reverse"
             }
         });
+
         tl.to(".cap-eyebrow", { opacity: 1, y: 0, duration: 0.5 })
           .to(".cap-title", { opacity: 1, y: 0, duration: 0.6 }, "-=0.3")
-          .to(".cap-panel", { opacity: 1, y: 0, stagger: 0.15, duration: 0.8, ease: "power3.out" }, "-=0.4");
+          .to(".cap-panel", { 
+              opacity: 1, 
+              y: 0, 
+              stagger: 0.15, 
+              duration: 0.8, 
+              ease: "power3.out" 
+          }, "-=0.4");
     };
 
-    // --- 4. PORTFOLIO LIGHTBOX LOGIC ---
-    // Inhe window object mein dala hai takay HTML ka onclick inhen dhond sakay
+    // --- 5. NEW PORTFOLIO LIGHTBOX ENGINE ---
+    // Inhe window object mein rakha hai takay HTML onclick se connect ho sakain
     window.openLightbox = (element) => {
         const imgSrc = element.querySelector('img').src;
         const lightbox = document.getElementById('lightbox');
@@ -3175,7 +3185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // --- 5. TESTIMONIALS SLIDER ---
+    // --- 6. TESTIMONIALS SLIDER ---
     const initTestimonials = () => {
         const testimonials = [
             { name: "James Carter", role: "CEO, Elevate Brands", text: "Yasir engineered our digital presence. The system is flawless.", initial: "J" },
@@ -3214,7 +3224,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (card) setInterval(window.nextSlide, 7000);
     };
 
-    // --- 6. UTILITIES (CLOCK & KEYBOARD) ---
+    // --- 7. UTILITIES: CLOCK & ESCAPE KEY ---
     const initUtilities = () => {
         const updateClock = () => {
             const clockEl = document.getElementById('khi-time');
@@ -3230,22 +3240,21 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
                 window.closeLightbox();
-                // Close other modals if any
-                const modal = document.getElementById('yw-modal');
-                if (modal) modal.classList.remove('open');
             }
         });
     };
 
-    // --- EXECUTE ALL MODULES ---
+    // --- EXECUTE INITIALIZATION ---
     initNavigation();
     initAboutEffects();
     initGSAP();
     initTestimonials();
     initUtilities();
-});
 
+});
+</script>
 </body>
 </html>
+
 
 
