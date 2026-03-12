@@ -1868,6 +1868,245 @@
         .footer-links { flex-wrap: wrap; justify-content: center; gap: 18px; }
         .footer-time { display: none; }
     }
+    
+    /* ═══════════════════════════════════════
+   WEBSITES SECTION
+   ═══════════════════════════════════════ */
+
+#yasir-websites {
+    padding: 80px 6vw 120px;
+    background-color: var(--white);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.websites-intro {
+    max-width: 1400px;
+    margin: 0 auto 60px;
+}
+
+.websites-intro h2 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 900;
+    text-transform: uppercase;
+    color: var(--black);
+    line-height: 0.85;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.websites-intro h2 span {
+    color: var(--yellow);
+}
+
+.websites-intro p {
+    font-size: clamp(14px, 1.3vw, 17px);
+    color: var(--gray);
+    margin-top: 20px;
+    max-width: 600px;
+    line-height: 1.8;
+}
+
+/* Website Cards Grid */
+.websites-grid {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+}
+
+.website-card {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #f7f7f7;
+    border: 1px solid var(--light-border);
+    transition: all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.website-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12);
+    border-color: var(--yellow);
+}
+
+/* Website Image */
+.website-image {
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(135deg, #f0f0f0, #fafafa);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.website-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.website-card:hover .website-image img {
+    transform: scale(1.08);
+}
+
+/* Website Overlay */
+.website-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.website-card:hover .website-overlay {
+    opacity: 1;
+}
+
+.visit-tag {
+    background: var(--yellow);
+    color: var(--black);
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-weight: 800;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* Website Details */
+.website-details {
+    padding: 30px;
+}
+
+.website-category {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--yellow);
+    margin-bottom: 12px;
+}
+
+.website-name {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--black);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+}
+
+.website-description {
+    font-size: 13px;
+    color: var(--gray);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.website-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.feature-tag {
+    display: inline-block;
+    background: rgba(250, 204, 21, 0.1);
+    color: var(--black);
+    padding: 6px 12px;
+    border-radius: 30px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.website-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--yellow);
+    color: var(--black);
+    padding: 10px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.website-cta:hover {
+    background: var(--black);
+    color: var(--white);
+    transform: translateY(-2px);
+}
+
+.website-cta svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    .websites-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .websites-intro h2 {
+        font-size: 3.5rem;
+    }
+
+    .website-card {
+        margin: 0 auto;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 600px) {
+    #yasir-websites {
+        padding: 60px 4vw 80px;
+    }
+
+    .websites-intro h2 {
+        font-size: 2.5rem;
+    }
+
+    .websites-intro p {
+        font-size: 13px;
+    }
+
+    .website-image {
+        height: 220px;
+    }
+
+    .website-details {
+        padding: 20px;
+    }
+
+    .website-name {
+        font-size: 18px;
+    }
+
+    .website-description {
+        font-size: 12px;
+    }
+}
 
     </style>
 </head>
@@ -2147,6 +2386,173 @@
     </div>
 </section>
 
+<!-- WEBSITES SECTION -->
+<section id="yasir-websites">
+    <div class="websites-intro">
+        <h2>Custom <span>Websites</span>.</h2>
+        <p>Professional websites built for conversions. Fast, beautiful, and engineered to grow your business.</p>
+    </div>
+
+    <div class="websites-grid">
+        <!-- Website 1 -->
+        <div class="website-card" onclick="openWebsite('https://eleganzastore.com/')">
+            <div class="website-image">
+                <img src="https://demo.exposuremarketingagency.com/wp-content/uploads/2026/03/imgi_61_IMG_1509.jpeg?text=E-Commerce+Store" alt="E-Commerce Website">
+                <div class="website-overlay">
+                    <span class="visit-tag">Visit Website</span>
+                </div>
+            </div>
+            <div class="website-details">
+                <div class="website-category">E-Commerce</div>
+                <h3 class="website-name">Fashion Store</h3>
+                <p class="website-description">Complete e-commerce solution with product catalog, shopping cart, and payment integration.</p>
+                <div class="website-features">
+                    <span class="feature-tag">Responsive</span>
+                    <span class="feature-tag">Fast</span>
+                    <span class="feature-tag">SEO</span>
+                </div>
+                <button class="website-cta" onclick="openWebsite('https://eleganzastore.com/')">
+                    View Live
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Website 2 -->
+        <div class="website-card" onclick="openWebsite('https://mizaajrestaurant.com/')">
+            <div class="website-image">
+                <img src="https://demo.exposuremarketingagency.com/wp-content/uploads/2026/03/imgi_64_imagehea.jpeg?text=Restaurant+Website" alt="Restaurant Website">
+                <div class="website-overlay">
+                    <span class="visit-tag">Visit Website</span>
+                </div>
+            </div>
+            <div class="website-details">
+                <div class="website-category">Restaurant</div>
+                <h3 class="website-name">Premium Dining</h3>
+                <p class="website-description">Modern restaurant website with menu showcase, reservation system, and online ordering.</p>
+                <div class="website-features">
+                    <span class="feature-tag">Bookings</span>
+                    <span class="feature-tag">Online Order</span>
+                    <span class="feature-tag">Modern</span>
+                </div>
+                <button class="website-cta" onclick="openWebsite('https://mizaajrestaurant.com/')">
+                    View Live
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Website 3 -->
+        <div class="website-card" onclick="openWebsite('https://exposuremarketingagency.com/')">
+            <div class="website-image">
+                <img src="https://demo.exposuremarketingagency.com/wp-content/uploads/2026/03/imgi_34_25962b9d03cfef43a48ceb78353a2314.png?text=Agency+Website" alt="Agency Website">
+                <div class="website-overlay">
+                    <span class="visit-tag">Visit Website</span>
+                </div>
+            </div>
+            <div class="website-details">
+                <div class="website-category">Agency</div>
+                <h3 class="website-name">Creative Agency</h3>
+                <p class="website-description">Portfolio-focused agency website showcasing services, projects, and client testimonials.</p>
+                <div class="website-features">
+                    <span class="feature-tag">Portfolio</span>
+                    <span class="feature-tag">CMS</span>
+                    <span class="feature-tag">Blog</span>
+                </div>
+                <button class="website-cta" onclick="openWebsite('https://exposuremarketingagency.com/')">
+                    View Live
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </button>
+            </div>
+        </div>
+
+       <!-- Website 4 -->
+<div class="website-card" onclick="openWebsite('https://bahriatownlocals.com/')">
+    
+    <div class="website-image">
+        <img src="https://demo.exposuremarketingagency.com/wp-content/uploads/2026/03/imgi_13_aa.jpg?text=Agency+Website" alt="Agency Website">
+        
+        <div class="website-overlay">
+            <span class="visit-tag">Visit Website</span>
+        </div>
+    </div>
+
+    <div class="website-details">
+        
+        <div class="website-category">Community Platform</div>
+
+        <h3 class="website-name">Bahria Town Locals</h3>
+
+        <p class="website-description">
+            A modern community platform connecting residents with local businesses, events, and services inside Bahria Town.
+        </p>
+
+        <div class="website-features">
+            <span class="feature-tag">Business Directory</span>
+            <span class="feature-tag">Community Listings</span>
+            <span class="feature-tag">Local Services</span>
+        </div>
+
+        <button class="website-cta" onclick="openWebsite('https://bahriatownlocals.com/')">
+            View Live
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M7 17L17 7M17 7H7M17 7V17"/>
+            </svg>
+        </button>
+
+    </div>
+</div>
+
+        <!-- Website 5 -->
+        <div class="website-card" onclick="openWebsite('https://lavishsaloon.com.pk/')">
+            <div class="website-image">
+                <img src="https://demo.exposuremarketingagency.com/wp-content/uploads/2026/03/imgi_4_hero-3.jpeg?text=Salon+Website" alt="Salon Website">
+                <div class="website-overlay">
+                    <span class="visit-tag">Visit Website</span>
+                </div>
+            </div>
+            <div class="website-details">
+                <div class="website-category">Beauty & Wellness</div>
+                <h3 class="website-name">Premium Salon</h3>
+                <p class="website-description">Salon website with booking system, service showcase, team profiles, and customer reviews.</p>
+                <div class="website-features">
+                    <span class="feature-tag">Booking</span>
+                    <span class="feature-tag">Reviews</span>
+                    <span class="feature-tag">Gallery</span>
+                </div>
+                <button class="website-cta" onclick="openWebsite('https://lavishsaloon.com.pk/')">
+                    View Live
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Website 6 -->
+        <div class="website-card" onclick="openWebsite('https://4starmarketingsukkur.com/')">
+            <div class="website-image">
+                <img src="https://demo.exposuremarketingagency.com/wp-content/uploads/2026/03/ChatGPT-Image-Jan-30-2026-05_14_16-PM.png?text=Corporate+Website" alt="Corporate Website">
+                <div class="website-overlay">
+                    <span class="visit-tag">Visit Website</span>
+                </div>
+            </div>
+            <div class="website-details">
+                <div class="website-category">Corporate</div>
+                <h3 class="website-name">Corporate Solutions</h3>
+                <p class="website-description">Professional corporate website with company overview, services, team, and contact information.</p>
+                <div class="website-features">
+                    <span class="feature-tag">Professional</span>
+                    <span class="feature-tag">Services</span>
+                    <span class="feature-tag">Contact</span>
+                </div>
+                <button class="website-cta" onclick="openWebsite('https://4starmarketingsukkur.com/')">
+                    View Live
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17L17 7M17 7H7M17 7V17"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
 <div id="lightbox" onclick="closeLightboxFromBg(event)">
     <span class="close-btn" onclick="closeLightbox()">&times;</span>
     <img id="lightbox-img" src="">
@@ -2274,7 +2680,6 @@
     </div>
 </section>
 
-<!-- JAVASCRIPT -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     
@@ -2437,6 +2842,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (card) setInterval(window.nextSlide, 7000);
+    };
+
+    // --- WEBSITES SECTION ---
+    // Open Website in New Tab
+    window.openWebsite = (url) => {
+        window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     // --- UTILITIES ---
